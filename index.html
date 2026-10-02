@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="ru" data-api="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>Каргономика — свобода эффективного движения</title>
+    <meta name="description" content="Каргономика — экосистема сервисов для грузоперевозчиков: техника, финансирование, топливо, страхование и управление парком в одном окне." />
+    <!-- шрифты подключены локально: src/styles/fonts.css -->
+    <script>document.documentElement.classList.add('js')</script>
+    <!--styles-->
+  </head>
+  <body>
+    <!-- ================= Земля: копия интерактива cargo-earth, position: fixed под страницей ================= -->
+    <canvas id="globe" aria-label="Интерактивная модель Земли с точками грузовой сети"></canvas>
+    <div id="beam" aria-hidden="true"></div>
+    <div id="tip" role="status" aria-live="polite"></div>
+    <p id="nowebgl">Для фона с Землёй нужен браузер с WebGL 2.</p>
+
+    <!-- ================= 01 / Шапка ================= -->
+    <header class="hdr" id="hdr">
+      <div class="hdr__in">
+        <a class="logo" href="#top" aria-label="Каргономика — наверх" data-scroll>
+          <svg class="logo__svg" viewBox="0 0 135 19" width="135" height="19" aria-hidden="true"><use href="#i-logo" /></svg>
+        </a>
+        <nav class="nav" aria-label="Основное меню">
+          <a class="nav__link" href="#system" data-scroll>Грузоперевозчикам<svg class="nav__chev" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-chev" /></svg></a>
+          <a class="nav__link" href="#contact" data-scroll>Партнерам<svg class="nav__chev" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-chev" /></svg></a>
+          <a class="nav__link" href="#principles" data-scroll>Сотрудникам<svg class="nav__chev" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-chev" /></svg></a>
+          <div class="nav__item has-sub">
+            <button class="nav__link" type="button" aria-expanded="false" aria-haspopup="true">Экосистема<svg class="nav__chev" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-chev" /></svg></button>
+            <div class="sub" role="menu">
+              <div class="sub__in">
+                <span class="sub__label">Продукты</span>
+                <a role="menuitem" href="#system" data-scroll data-service="trade">Торговый дом</a>
+                <a role="menuitem" href="#system" data-scroll data-service="leasing">Карго Лизинг</a>
+                <a role="menuitem" href="#system" data-scroll data-service="rent">Карго Аренда</a>
+                <a role="menuitem" href="#system" data-scroll data-service="insurance">Карго Страхование</a>
+                <a role="menuitem" href="#system" data-scroll data-service="fuel">Карго Топливо</a>
+                <a role="menuitem" href="#system" data-scroll data-service="monitoring">Карго Мониторинг</a>
+                <a role="menuitem" href="#system" data-scroll data-service="logistics">Карго Логистика</a>
+                <a role="menuitem" href="#system" data-scroll data-service="cargo">Карго Грузы</a>
+                <a role="menuitem" href="#system" data-scroll data-service="market">Карго Маркет</a>
+              </div>
+            </div>
+          </div>
+          <a class="nav__link" href="#resource" data-scroll>Инвесторам</a>
+          <a class="nav__link" href="#belief" data-scroll>О компании</a>
+          <a class="nav__link" href="#footer" data-scroll>Контакты</a>
+        </nav>
+        <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false"><i></i><i></i></button>
+      </div>
+    </header>
+
+    <main class="page" id="top">
+      <!-- ================= 02 / Хиро ================= -->
+      <section class="hero" id="hero" aria-labelledby="hero-title">
+        <div class="hero__copy">
+        <h1 class="hero__title" id="hero-title">
+          <span class="hero__line"><span class="hero__txt hero__txt--1">Свобода эффективного</span></span>
+          <span class="hero__line"><span class="hero__txt hero__txt--2">движения</span></span>
+        </h1>
+        <a class="hero-cta solid magnetic" href="#calc" data-scroll>
+          <span class="hero-cta__label">Поднять эффективность моего парка</span>
+          <span class="hero-cta__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow" /></svg></span>
+        </a>
+        </div>
+
+        <div class="hero__bottom">
+        <p class="live solid">
+          <span class="live__dot" aria-hidden="true"></span>
+          <span>Вся информация отображается в&nbsp;реальном времени на&nbsp;основании данных системы <a href="#system" data-scroll data-service="monitoring">Карго Мониторинг</a></span>
+        </p>
+        <div class="stats solid glass" data-mode="base" aria-label="Статистика экосистемы">
+          <div class="stats__view stats__view--base">
+            <div class="stats__main">
+              <p class="stats__label">Общее количество сцепок в экосистеме</p>
+              <p class="stats__num"><span data-count="43678">43&nbsp;678</span> <span class="stats__dim"><span data-count="23">23</span>% всего рынка</span></p>
+            </div>
+            <div class="stats__cell">
+              <p class="stats__label">Средняя загрузка&nbsp; [&nbsp;т&nbsp;]</p>
+              <p class="stats__num" data-count="20">20</p>
+            </div>
+            <div class="stats__cell">
+              <p class="stats__label">Средний пробег в сутки&nbsp; [&nbsp;км&nbsp;]</p>
+              <p class="stats__num" data-count="895">895</p>
+            </div>
+            <div class="stats__cell">
+              <p class="stats__label">Средняя эффективность&nbsp; [&nbsp;руб/км&nbsp;]</p>
+              <p class="stats__num" data-count="759">759</p>
+            </div>
+          </div>
+          <!-- при наведении на сцепку (только на первом экране) — данные этой сцепки -->
+          <div class="stats__view stats__view--unit" aria-live="polite">
+            <div class="stats__main">
+              <p class="stats__label" data-u="coupling">Сцепка #34507</p>
+              <p class="stats__num stats__model" data-u="model">Mercedes-Benz Actros</p>
+            </div>
+            <div class="stats__cell">
+              <p class="stats__label">Загрузка&nbsp; [&nbsp;т&nbsp;]</p>
+              <p class="stats__num" data-u="load">18</p>
+            </div>
+            <div class="stats__cell">
+              <p class="stats__label">Пробег в сутки&nbsp; [&nbsp;км&nbsp;]</p>
+              <p class="stats__num" data-u="mileage">1205</p>
+            </div>
+            <div class="stats__cell">
+              <p class="stats__label">Эффективность&nbsp; [&nbsp;руб/км&nbsp;]</p>
+              <p class="stats__num" data-u="efficiency">1348</p>
+            </div>
+            <div class="stats__route">
+              <p><span data-u="from">Москва</span>&nbsp; | &nbsp;<span class="stats__m" data-u="traveled">5&nbsp;670&nbsp;023</span> м</p>
+              <p><span data-u="to">Владивосток</span>&nbsp; | &nbsp;<span class="stats__m" data-u="remaining">3&nbsp;432&nbsp;788</span> м</p>
+            </div>
+            <div class="stats__track" aria-hidden="true"><i class="stats__bar" data-u="bar"><b class="stats__runner"></b></i></div>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      <!-- ================= 03 / Система решений ================= -->
+      <section class="sec" id="system" aria-labelledby="system-title">
+        <div class="wrap">
+          <h2 class="h2 w-812" id="system-title" data-split>Мы создали систему решений, которые усиливают друг друга</h2>
+          <p class="lead w-678 mt-22" data-fade>Когда процессы работают как единая система, бизнес движется свободнее. Мы связываем ключевые этапы перевозки, чтобы видеть потери раньше, управлять ими точнее и высвобождать ресурс для роста.</p>
+
+          <div class="scheme solid mt-40" data-rise>
+            <div class="lines lines--system" aria-hidden="true"></div>
+            <div class="scheme__top">
+              <div class="scheme__cap">
+                <h3 class="scheme__title">Сумма эффективности при выбранных юнитах</h3>
+                <p class="scheme__hint">Отмечайте юниты справа — сумма пересчитывается сразу, соседние сервисы добавляют выгоду на стыке</p>
+              </div>
+              <div class="units" role="group" aria-label="Юниты экосистемы">
+                <div class="units__row">
+                  <button class="unit is-on" type="button" data-unit="fuel" aria-pressed="true"><i>+</i> Топливо</button>
+                  <button class="unit is-on" type="button" data-unit="trade" aria-pressed="true"><i>+</i> Торговый дом</button>
+                  <button class="unit" type="button" data-unit="insurance" aria-pressed="false"><i>+</i> Страхование</button>
+                  <button class="unit" type="button" data-unit="logistics" aria-pressed="false"><i>+</i> Логистика</button>
+                  <button class="unit" type="button" data-unit="market" aria-pressed="false"><i>+</i> Маркет</button>
+                </div>
+                <div class="units__row">
+                  <button class="unit" type="button" data-unit="cargo" aria-pressed="false"><i>+</i> Грузы</button>
+                  <button class="unit" type="button" data-unit="leasing" aria-pressed="false"><i>+</i> Лизинг</button>
+                  <button class="unit" type="button" data-unit="monitoring" aria-pressed="false"><i>+</i> Мониторинг</button>
+                  <button class="unit" type="button" data-unit="rent" aria-pressed="false"><i>+</i> Аренда</button>
+                </div>
+              </div>
+            </div>
+            <div class="sum glass">
+              <p class="sum__value"><span data-out="unit-sum">96&nbsp;000&nbsp;₽</span><span class="sum__delta" data-out="unit-delta" aria-hidden="true"></span></p>
+              <p class="sum__meta" data-out="unit-meta">в год на одну сцепку · выбрано юнитов: 2 из 9 · стыков замкнуто: 1</p>
+              <div class="sum__bar" aria-hidden="true"><i data-out="unit-bar"></i></div>
+            </div>
+            <p class="scheme__note">Экономьте до 1 млн ₽ на одной сцепке в год</p>
+          </div>
+
+          <div class="services mt-40" data-stagger>
+            <a class="svc solid" href="#calc" data-scroll data-service="fuel">
+              <h3 class="svc__title">Топливо</h3>
+              <p class="svc__text">Делает стоимость рейса управляемой: от выгодной заправки до контроля расходов на маршруте</p>
+              <svg class="svc__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+            <a class="svc solid" href="#calc" data-scroll data-service="trade">
+              <h3 class="svc__title">Торговый дом</h3>
+              <p class="svc__text">Подбирает технику под задачу перевозки, чтобы новый маршрут или объём не пришлось откладывать</p>
+              <svg class="svc__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+            <a class="svc solid" href="#calc" data-scroll data-service="leasing">
+              <h3 class="svc__title">Лизинг</h3>
+              <p class="svc__text">Помогает получить технику для роста, не останавливая бизнес на этапе накопления капитала</p>
+              <svg class="svc__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+            <a class="svc solid" href="#calc" data-scroll data-service="rent">
+              <h3 class="svc__title">Аренда</h3>
+              <p class="svc__text">Даёт технику тогда, когда она нужна: для нового контракта, сезонной нагрузки или подмены в ремонте</p>
+              <svg class="svc__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+            <a class="svc solid" href="#calc" data-scroll data-service="insurance">
+              <h3 class="svc__title">Страхование</h3>
+              <p class="svc__text">Защищает технику и финансовую устойчивость бизнеса, когда на маршруте возникают непредвиденные ситуации</p>
+              <svg class="svc__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+            <a class="svc solid" href="#calc" data-scroll data-service="monitoring">
+              <h3 class="svc__title">Мониторинг</h3>
+              <p class="svc__text">Делает работу парка видимой: местоположение, пробег, заправки и отклонения от плана под контролем</p>
+              <svg class="svc__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+            <a class="svc solid" href="#calc" data-scroll data-service="logistics">
+              <h3 class="svc__title">Логистика</h3>
+              <p class="svc__text">Соединяет рейсы, транспорт, документы и топливо, чтобы управлять перевозками как единой системой</p>
+              <svg class="svc__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+            <a class="svc solid" href="#calc" data-scroll data-service="cargo">
+              <h3 class="svc__title">Грузы (new)</h3>
+              <p class="svc__text">Помогает находить загрузку и сокращать пустые пробеги, чтобы каждая машина работала эффективнее</p>
+              <svg class="svc__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+            <a class="svc solid" href="#calc" data-scroll data-service="market">
+              <h3 class="svc__title">Маркет (new)</h3>
+              <p class="svc__text">Делает обслуживание парка более предсказуемым: запчасти, шины и расходники без лишних затрат и поиска</p>
+              <svg class="svc__arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 04 / Экосистема комплексных решений ================= -->
+      <section class="sec" id="ecosystem" aria-labelledby="eco-title">
+        <div class="wrap">
+          <h2 class="h2 w-900" id="eco-title" data-split>Экосистема комплексных решений</h2>
+          <p class="lead w-599 mt-22" data-fade>Сервисы Каргономики складываются в связки под конкретный запрос бизнеса. Выберите задачу, близкую к вашей, чтобы увидеть, какой набор сервисов её эффективно решает.</p>
+
+          <div class="carousel mt-44" data-carousel="tasks">
+            <div class="carousel__viewport solid">
+              <div class="carousel__track">
+                <article class="task solid">
+                  <h3 class="task__title">Снизить <br />себестоимость рейса</h3>
+                  <p class="task__bundle">Карго Топливо + Карго Логистика + Карго Мониторинг</p>
+                  <p class="task__text">Топливо даёт цену литра на уровне крупных перевозчиков, логистика строит маршрут с учётом выгодных заправок, мониторинг сверяет план с фактическим расходом и пробегом. Вместе три сервиса снижают не цену топлива саму по себе, а себестоимость каждого рейса целиком.</p>
+                  <a class="task__link" href="#calc" data-scroll data-preset="fuel,logistics,monitoring">Как это работает <span>→</span></a>
+                </article>
+                <article class="task solid">
+                  <h3 class="task__title">Профинансировать рост без свободного капитала</h3>
+                  <p class="task__bundle">Сервис X + Сервис Y + Сервис Z</p>
+                  <p class="task__text">Здесь появится текст о том, как мы эффективно решаем эту задачу набором сервисов.</p>
+                  <a class="task__link" href="#calc" data-scroll>Как это работает <span>→</span></a>
+                </article>
+                <article class="task solid">
+                  <h3 class="task__title">Обновить парк</h3>
+                  <p class="task__bundle">Сервис X + Сервис Y + Сервис Z</p>
+                  <p class="task__text">Здесь появится текст о том, как мы эффективно решаем эту задачу набором сервисов.</p>
+                  <a class="task__link" href="#calc" data-scroll>Как это работает <span>→</span></a>
+                </article>
+                <article class="task solid">
+                  <h3 class="task__title">Увеличить выручку</h3>
+                  <p class="task__bundle">Сервис X + Сервис Y + Сервис Z</p>
+                  <p class="task__text">Здесь появится текст о том, как мы эффективно решаем эту задачу набором сервисов.</p>
+                  <a class="task__link" href="#calc" data-scroll>Как это работает <span>→</span></a>
+                </article>
+                <article class="task solid">
+                  <h3 class="task__title">Объединить разрозненные системы управления парком</h3>
+                  <p class="task__bundle">Сервис X + Сервис Y + Сервис Z</p>
+                  <p class="task__text">Здесь появится текст о том, как мы эффективно решаем эту задачу набором сервисов.</p>
+                  <a class="task__link" href="#calc" data-scroll>Как это работает <span>→</span></a>
+                </article>
+                <article class="task solid">
+                  <h3 class="task__title">Повысить рентабельность бизнеса</h3>
+                  <p class="task__bundle">Сервис X + Сервис Y + Сервис Z</p>
+                  <p class="task__text">Здесь появится текст о том, как мы эффективно решаем эту задачу набором сервисов.</p>
+                  <a class="task__link" href="#calc" data-scroll>Как это работает <span>→</span></a>
+                </article>
+              </div>
+            </div>
+            <div class="ctrl mt-44">
+              <div class="ctrl__btns">
+                <button class="arrow solid" type="button" data-prev aria-label="Назад">←</button>
+                <button class="arrow solid" type="button" data-next aria-label="Вперёд">→</button>
+              </div>
+              <p class="ctrl__text">6 связок под разные задачи</p>
+              <div class="ctrl__progress" aria-hidden="true"><i></i></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 05 / Как мы делаем управление парком эффективнее ================= -->
+      <section class="sec sec--how" id="how" aria-labelledby="how-title">
+        <div class="how solid" data-expand>
+          <div class="how__media" aria-hidden="true"><img src="img/trucks.jpg" alt="" loading="lazy" /></div>
+          <h2 class="h2 how__title" id="how-title" data-split>Как мы делаем управление парком эффективнее</h2>
+          <div class="how__cols" data-stagger>
+            <div class="how__col">
+              <p class="how__num">01</p>
+              <h3 class="how__h">Создаём единую систему управления</h3>
+              <p class="how__text">Чтобы вы управляли логистикой, покупкой и эксплуатацией автопарка в одном окне и тратили меньше времени на разрозненные процессы.</p>
+            </div>
+            <div class="how__col">
+              <p class="how__num">02</p>
+              <h3 class="how__h">Меняем правила доступа к возможностям</h3>
+              <p class="how__text">Объединяем спрос транспортных компаний, адаптируем сервисы под отрасль и передаём преимущества масштаба каждому перевозчику независимо от размера парка.</p>
+            </div>
+            <div class="how__col">
+              <p class="how__num">03</p>
+              <h3 class="how__h">Устраняем ограничения для роста</h3>
+              <p class="how__text">Снижаем себестоимость перевозок, чтобы у бизнеса появился запас прочности: принимать новые контракты, обновлять технику и увереннее двигаться дальше.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 06 / Ресурс для движения вперёд ================= -->
+      <section class="sec" id="resource" aria-labelledby="res-title">
+        <div class="wrap">
+          <h2 class="h2 w-792" id="res-title" data-split>Чтобы у бизнеса было больше ресурса для движения вперёд</h2>
+          <div class="benefits mt-44" data-stagger>
+            <div class="ben solid">
+              <p class="ben__value">&gt; <span data-count="519">519</span> тыс. ₽ / год</p>
+              <p class="ben__sub">на сцепке при подключении Карго Лизинг</p>
+              <p class="ben__title">Свобода инвестировать в рост</p>
+              <p class="ben__text">Экономия средств на финансировании техники</p>
+            </div>
+            <div class="ben solid">
+              <p class="ben__value">&gt; <span data-count="235">235</span> тыс. ₽ / год</p>
+              <p class="ben__sub">на сцепке при подключении Карго Топливо</p>
+              <p class="ben__title">Свобода планировать рейс</p>
+              <p class="ben__text">Расходы на топливо становятся управляемыми</p>
+            </div>
+            <div class="ben solid">
+              <p class="ben__value">&gt; <span data-count="6">6</span> тыс. ₽ / год</p>
+              <p class="ben__sub">на сцепке при подключении Карго Мониторинг</p>
+              <p class="ben__title">Свобода видеть полную картину</p>
+              <p class="ben__text">Измеримый и прозрачный контроль за парком</p>
+            </div>
+            <div class="ben ben--tall solid">
+              <p class="ben__value">&gt; <span data-count="60">60</span> тыс. ₽ / год</p>
+              <p class="ben__sub">на сцепке при подключении Карго Страхование</p>
+              <p class="ben__title">Свобода работать увереннее</p>
+              <p class="ben__text">Риски не выбивают бизнес из графика</p>
+            </div>
+            <div class="ben ben--dark ben--tall solid">
+              <div class="lines lines--priceless" aria-hidden="true"></div>
+              <p class="ben__value">Бесценно</p>
+              <p class="ben__sub">при прохождении обучающего курса</p>
+              <p class="ben__value ben__value--title">Свобода принимать решения</p>
+              <p class="ben__sub">Управленческая компетенция усиливает экономику компании</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 07 / Калькулятор эффективности ================= -->
+      <section class="sec" id="calc" aria-labelledby="calc-title">
+        <div class="wrap">
+          <h2 class="h2 w-900" id="calc-title" data-split>Посчитайте эффективность своего парка</h2>
+          <div class="calc solid mt-32" data-rise>
+            <div class="calc__inputs">
+              <div class="calc__row">
+                <p class="calc__label" id="fleet-label">Количество тягачей в вашем парке</p>
+                <p class="calc__count"><span class="calc__count-n" data-out="fleet-n">25</span> <span data-out="fleet-word">тягачей</span></p>
+              </div>
+              <div class="range" data-range>
+                <div class="range__track"><i class="range__fill"></i></div>
+                <div class="range__knob" role="slider" tabindex="0" aria-labelledby="fleet-label" aria-valuemin="1" aria-valuemax="300" aria-valuenow="25"></div>
+              </div>
+              <div class="calc__scale"><span>1</span><span>300</span></div>
+              <div class="calc__row calc__row--presets">
+                <div class="presets" role="group" aria-label="Быстрый выбор размера парка">
+                  <button class="preset" type="button" data-fleet="5">5</button>
+                  <button class="preset is-on" type="button" data-fleet="25">25</button>
+                  <button class="preset" type="button" data-fleet="100">100</button>
+                  <button class="preset" type="button" data-fleet="300">300</button>
+                </div>
+                <p class="calc__note">Расчёт линейный: экономия на&nbsp;тягач ×&nbsp;размер парка</p>
+              </div>
+              <div class="calc__sep" aria-hidden="true"></div>
+              <p class="calc__label">Сервисы, которые вы хотите подключить</p>
+              <p class="calc__note calc__note--sub">Соседние сервисы дают дополнительную выгоду на стыке</p>
+              <div class="picks" role="group" aria-label="Сервисы">
+                <button class="pick is-on" type="button" data-pick="fuel" aria-pressed="true"><i>+</i> Топливо</button>
+                <button class="pick is-on" type="button" data-pick="market" aria-pressed="true"><i>+</i> Маркет (new)</button>
+                <button class="pick is-on" type="button" data-pick="trade" aria-pressed="true"><i>+</i> Торговый дом</button>
+                <button class="pick is-on" type="button" data-pick="leasing" aria-pressed="true"><i>+</i> Лизинг</button>
+                <button class="pick is-on" type="button" data-pick="cargo" aria-pressed="true"><i>+</i> Грузы (new)</button>
+                <button class="pick is-on" type="button" data-pick="logistics" aria-pressed="true"><i>+</i> Логистика</button>
+                <button class="pick is-on" type="button" data-pick="monitoring" aria-pressed="true"><i>+</i> Мониторинг</button>
+                <button class="pick is-on" type="button" data-pick="insurance" aria-pressed="true"><i>+</i> Страхование</button>
+                <button class="pick is-on" type="button" data-pick="rent" aria-pressed="true"><i>+</i> Аренда</button>
+              </div>
+            </div>
+
+            <div class="result">
+              <div class="lines lines--result" aria-hidden="true"></div>
+              <p class="result__cap">Ваша эффективность — оценка в год при текущем выборе</p>
+              <div class="result__main">
+                <p class="result__value" data-out="fleet-sum">10&nbsp;625&nbsp;000&nbsp;₽</p>
+                <p class="result__sub">экономия в год на весь парк</p>
+              </div>
+              <dl class="result__list">
+                <div><dt>На тягач</dt><dd data-out="fleet-unit">425&nbsp;000&nbsp;₽</dd></div>
+                <div><dt>Из них на стыках</dt><dd data-out="fleet-junctions">3&nbsp;350&nbsp;000&nbsp;₽</dd></div>
+                <div><dt>Стыков замкнуто</dt><dd data-out="fleet-closed">9 / 9</dd></div>
+              </dl>
+              <a class="result__link" href="#contact" data-scroll>Обсудить расчёт <span>→</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 08 / Цитата основателя ================= -->
+      <section class="sec sec--center" id="belief" aria-labelledby="belief-title">
+        <div class="wrap">
+          <h2 class="h2 w-634 center" id="belief-title" data-split>Мы верим, что эффективность даёт свободу</h2>
+          <figure class="quote solid glass mt-44" data-rise>
+            <blockquote class="quote__text" data-words>«Любую систему можно улучшить, а любое сопротивление устранить. В конечном итоге именно эффективность даёт свободу выбирать и масштабироваться. В этом и заключается главная цель Каргономики: мы даём автопаркам запас прочности и открываем дорогу к свободному движению»</blockquote>
+            <figcaption class="quote__who">
+              <img class="quote__photo" src="img/founder.jpg" alt="Александр Проскурин" width="100" height="100" />
+              <span class="quote__name">Александр Проскурин</span>
+              <span class="quote__role">Основатель Каргономики</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================= 09 / Принципы ================= -->
+      <section class="sec" id="principles" aria-labelledby="pr-title">
+        <div class="wrap">
+          <h2 class="h2 w-706" id="pr-title" data-split>Принципы Каргономики</h2>
+          <div class="principles mt-44" data-stagger>
+            <article class="pr pr--1 solid">
+              <p class="pr__num">01</p>
+              <div class="pr__body">
+                <h3 class="pr__title">Честность — наша экономическая стратегия</h3>
+                <p class="pr__text">Строим прозрачные правила там, где рынок привык к сложным условиям, скрытым платежам и односторонним решениям. Доверие создаёт устойчивые отношения, а устойчивые отношения делают систему сильнее.</p>
+              </div>
+            </article>
+            <article class="pr pr--2 solid">
+              <p class="pr__num">02</p>
+              <div class="pr__body">
+                <h3 class="pr__title">Неэффективность — наш главный конкурент</h3>
+                <p class="pr__text">Мы не просто предлагаем отдельные сервисы. Мы ищем скрытые издержки, простои, разрывы процессов и невыгодные условия, чтобы возвращать перевозчику время, деньги и управляемость.</p>
+              </div>
+            </article>
+            <article class="pr pr--3 solid">
+              <p class="pr__num">03</p>
+              <div class="pr__body">
+                <h3 class="pr__title">Преимущества масштаба каждому перевозчику</h3>
+                <p class="pr__text">Объединяем спрос и инфраструктуру экосистемы, чтобы условия, доступные крупным игрокам, становились доступны малым и средним транспортным компаниям.</p>
+              </div>
+            </article>
+            <article class="pr pr--4 solid">
+              <p class="pr__num">04</p>
+              <div class="pr__body">
+                <h3 class="pr__title">Свобода создавать и развиваться</h3>
+                <p class="pr__text">Берём на себя часть рутины, рисков и операционной сложности, чтобы у предпринимателя оставались силы и пространство для развития бизнеса.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 10 / Истории клиентов ================= -->
+      <section class="sec" id="cases" aria-labelledby="cases-title">
+        <div class="wrap">
+          <h2 class="h2 w-645" id="cases-title" data-split>Истории клиентов, которые уже выбрали эффективность</h2>
+          <p class="lead w-629 mt-20" data-fade>Реальные результаты подключения сервисов экосистемы — по одному кейсу с каждого юнита, который уже готов поделиться цифрами.</p>
+
+          <div class="carousel mt-44" data-carousel="cases">
+            <div class="carousel__viewport solid">
+              <div class="carousel__track">
+                <article class="case solid">
+                  <div class="case__logo"><img class="logo-delko" src="img/logo-delko.png" alt="Delko" width="150" height="48" /></div>
+                  <p class="case__unit">Каргономика Торговый дом</p>
+                  <h3 class="case__name">Delko</h3>
+                  <p class="case__text">Поэтапная поставка полуприцепов WAGNERMAIER под рост эффективности дальнемагистральных рейсов.</p>
+                  <a class="case__link" href="#contact" data-scroll>Читать кейс <span>→</span></a>
+                </article>
+                <article class="case solid">
+                  <div class="case__logo"><img class="logo-transcom" src="img/logo-transcom.png" alt="Транском" width="118" height="22" /></div>
+                  <p class="case__unit">Каргономика Страхование</p>
+                  <h3 class="case__name">ГК «Транском»</h3>
+                  <p class="case__text">Застраховали весь автопарк группы, продлили договор на второй год и снизили расходы.</p>
+                  <a class="case__link" href="#contact" data-scroll>Читать кейс <span>→</span></a>
+                </article>
+                <article class="case solid">
+                  <div class="case__logo"><img class="logo-dentro" src="img/logo-dentro.png" alt="Dentro" width="100" height="30" /></div>
+                  <p class="case__unit">Каргономика Мониторинг</p>
+                  <h3 class="case__name">DENTRO</h3>
+                  <p class="case__text">1300 транспортных средств в едином интерфейсе, скорость принятия решений выросла кратно.</p>
+                  <a class="case__link" href="#contact" data-scroll>Читать кейс <span>→</span></a>
+                </article>
+                <article class="case solid">
+                  <div class="case__logo"><img class="logo-ultra" src="img/logo-ultra.png" alt="Ультралогистика" width="203" height="34" /></div>
+                  <p class="case__unit">Каргономика Логистика</p>
+                  <h3 class="case__name">«Ультралогистика»</h3>
+                  <p class="case__text">Более 600 объектов мониторинга под контролем, прозрачность процессов повышена.</p>
+                  <a class="case__link" href="#contact" data-scroll>Читать кейс <span>→</span></a>
+                </article>
+                <article class="case solid">
+                  <div class="case__logo case__logo--empty">логотип</div>
+                  <p class="case__unit">Карго Топливо</p>
+                  <h3 class="case__name">ГК «Союз-Регион»</h3>
+                  <p class="case__text">64,49 млн ₽ экономии за всё время использования топливных карт.</p>
+                  <a class="case__link" href="#contact" data-scroll>Читать кейс <span>→</span></a>
+                </article>
+              </div>
+            </div>
+            <div class="ctrl mt-28">
+              <div class="ctrl__btns">
+                <button class="arrow solid" type="button" data-prev aria-label="Назад">←</button>
+                <button class="arrow solid" type="button" data-next aria-label="Вперёд">→</button>
+              </div>
+              <p class="ctrl__text">5 кейсов юнитов экосистемы</p>
+              <div class="ctrl__progress" aria-hidden="true"><i></i></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 11 / Форма заявки ================= -->
+      <section class="sec sec--center" id="contact" aria-labelledby="contact-title">
+        <div class="wrap">
+          <h2 class="h2 w-960 center" id="contact-title" data-split>Поможем найти пути <br />к повышению эффективности</h2>
+          <p class="lead w-860 center mt-20" data-fade>Расскажите о вашем парке, мы поможем определить, где сейчас скрывается наибольший <br class="br-desk" />потенциал: в расходах, загрузке, управлении, технике или финансировании.</p>
+
+          <form class="form solid mt-40" novalidate data-rise>
+            <div class="form__body">
+              <label class="field">
+                <span class="field__label">Имя</span>
+                <input class="field__input" type="text" name="name" placeholder="Имя" autocomplete="name" required />
+                <span class="field__err" aria-live="polite"></span>
+              </label>
+              <label class="field mt-20">
+                <span class="field__label">Телефон</span>
+                <input class="field__input" type="tel" name="phone" placeholder="Телефон" autocomplete="tel" inputmode="tel" required />
+                <span class="field__err" aria-live="polite"></span>
+              </label>
+              <label class="check mt-24">
+                <input type="checkbox" name="agree" />
+                <span class="check__box" aria-hidden="true"><svg viewBox="0 0 12 10"><path d="M1 5.2 4.3 8.5 11 1.5" /></svg></span>
+                <span class="check__text">Я даю согласие на обработку персональных данных</span>
+              </label>
+              <span class="field__err field__err--check" aria-live="polite"></span>
+              <button class="submit magnetic mt-28" type="submit"><span class="submit__txt">Обсудить эффективность парка <span class="submit__arrow">→</span></span><span class="submit__spin" aria-hidden="true"></span></button>
+              <p class="form__note">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных.</p>
+            </div>
+            <div class="form__done" aria-live="polite" hidden>
+              <span class="form__ok" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" /><path d="M15 27 23 35 38 18" /></svg></span>
+              <p class="form__done-title">Заявка отправлена</p>
+              <p class="form__done-text">Это прототип: данные никуда не ушли. На сайте здесь будет отправка заявки менеджеру.</p>
+              <button class="form__again" type="button">Заполнить ещё раз</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= Футер ================= -->
+    <footer class="footer" id="footer">
+      <div class="footer__cta">
+        <div class="footer__cta-text">
+          <p class="footer__cta-title" data-split>Каргономика — экосистема, снижающая себестоимость грузоперевозок</p>
+          <p class="footer__cta-sub">Для тех, кому важна свобода эффективного движения, управления и развития</p>
+        </div>
+        <a class="footer__btn solid magnetic" href="#contact" data-scroll><span>Снизить расходы</span></a>
+      </div>
+      <div class="footer__cols">
+        <div class="fcol fcol--brand">
+          <svg class="fcol__logo" viewBox="0 0 135 19" width="180" height="25" aria-label="Каргономика"><use href="#i-logo" /></svg>
+          <p class="fcol__about">Экосистема сервисов для грузоперевозчиков: техника, финансирование, топливо, страхование и управление парком в одном окне.</p>
+          <p class="fcol__label">Центральный офис</p>
+          <a class="fcol__phone" href="tel:+74995770180">+7 (499) 577-01-80</a>
+          <a class="fcol__muted" href="mailto:info@cargonomica.com">info@cargonomica.com</a>
+          <p class="fcol__muted">г. Москва, Киевское шоссе, 22-й км, 6А, стр. 1</p>
+        </div>
+        <nav class="fcol" aria-label="Продукты">
+          <p class="fcol__label">Продукты</p>
+          <a href="#system" data-scroll>Торговый дом</a>
+          <a href="#system" data-scroll>Карго Лизинг</a>
+          <a href="#system" data-scroll>Карго Аренда</a>
+          <a href="#system" data-scroll>Карго Страхование</a>
+          <a href="#system" data-scroll>Карго Топливо</a>
+          <a href="#system" data-scroll>Карго Мониторинг</a>
+          <a href="#system" data-scroll>Карго Логистика</a>
+          <a href="#system" data-scroll>Карго Грузы</a>
+          <a href="#system" data-scroll>Карго Маркет</a>
+        </nav>
+        <nav class="fcol fcol--company" aria-label="Компания">
+          <p class="fcol__label">Компания</p>
+          <a href="#belief" data-scroll>О Каргономике</a>
+          <a href="#ecosystem" data-scroll>Экосистема</a>
+          <a href="#system" data-scroll>Грузоперевозчикам</a>
+          <a href="#contact" data-scroll>Поставщикам</a>
+          <a href="#principles" data-scroll>Соискателям</a>
+          <a href="#footer" data-scroll>Контакты</a>
+          <a href="#top" data-scroll>Личный кабинет</a>
+        </nav>
+        <div class="fcol fcol--deps">
+          <p class="fcol__label">Контакты отделов</p>
+          <div class="dep"><p class="dep__name">Техническая поддержка</p><p class="dep__line">+7 (499) 325-38-71 · support@cargonomica.com</p></div>
+          <div class="dep"><p class="dep__name">Юридический отдел</p><p class="dep__line">+7 (499) 577-01-80 · legal@cargonomica.com</p></div>
+          <div class="dep"><p class="dep__name">PR-отдел</p><p class="dep__line">+7 (499) 577-01-80 · pr@cargonomica.com</p></div>
+          <div class="dep"><p class="dep__name">HR-отдел</p><p class="dep__line">+7 (499) 577-01-80 · hr@cargonomica.com</p></div>
+          <div class="dep"><p class="dep__name">Бухгалтерия</p><p class="dep__line">+7 (499) 577-01-80 · finance@cargonomica.com</p></div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <div class="footer__copy"><span>© ООО «Каргономика», 2026</span><span>·</span><span>Все права защищены</span></div>
+        <div class="footer__legal"><a href="#footer">Политика конфиденциальности</a><a href="#footer">Пользовательское соглашение</a></div>
+      </div>
+    </footer>
+
+    <!-- мобильное меню -->
+    <div class="mnav" aria-hidden="true">
+      <nav class="mnav__in" aria-label="Меню">
+        <a href="#system" data-scroll>Грузоперевозчикам</a>
+        <a href="#contact" data-scroll>Партнерам</a>
+        <a href="#principles" data-scroll>Сотрудникам</a>
+        <a href="#ecosystem" data-scroll>Экосистема</a>
+        <a href="#resource" data-scroll>Инвесторам</a>
+        <a href="#belief" data-scroll>О компании</a>
+        <a href="#footer" data-scroll>Контакты</a>
+      </nav>
+    </div>
+
+    <!-- иконки из макета -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="i-logo" viewBox="0 0 135 19">
+        <path d="M53.9293 14.2714H55.9674V6.0181H59.9626V4.0833H53.9293V14.2714Z" fill="currentColor" />
+        <path d="M70.1564 9.17258C70.1564 12.3376 68.0165 14.4775 65.0604 14.4775C62.1042 14.4775 59.9636 12.3376 59.9636 9.17258C59.9636 6.01833 62.1042 3.87849 65.0604 3.87849C68.0165 3.87849 70.1564 6.01833 70.1564 9.17258ZM68.1175 9.17258C68.1175 7.0551 66.794 5.71616 65.0604 5.71616C63.326 5.71616 62.0025 7.0551 62.0025 9.17258C62.0025 11.3009 63.326 12.6413 65.0604 12.6413C66.794 12.6413 68.1175 11.3009 68.1175 9.17258Z" fill="currentColor" />
+        <path d="M52.603 9.17258C52.603 12.4355 50.5849 14.4775 47.914 14.4775C45.9568 14.4775 45.0604 13.4607 44.7543 13.0514H44.6526V18.3555H42.6145V4.0843H44.4483L44.6526 5.3053H44.7543C45.1012 4.9168 45.936 3.87849 47.914 3.87849C50.5849 3.87849 52.603 5.91041 52.603 9.17258ZM50.5641 9.17258C50.5641 7.0551 49.2391 5.71616 47.608 5.71616C45.9777 5.71616 44.6518 7.0551 44.6518 9.17258C44.6518 11.3009 45.9777 12.6413 47.608 12.6413C49.2391 12.6413 50.5641 11.3009 50.5641 9.17258Z" fill="currentColor" />
+        <path d="M40.8797 7.7473V14.2724H39.1469L38.9434 13.1493H38.8408C38.6366 13.4199 38.393 13.6465 38.1078 13.8284C37.6183 14.1537 36.8428 14.4775 35.7829 14.4775C33.5414 14.4775 32.1138 13.1701 32.1138 11.3224C32.1138 9.2805 33.4388 7.95158 36.2925 7.95158H38.8401V7.74654C38.8401 6.42841 38.0253 5.60747 36.6987 5.60747C35.2719 5.60747 34.6614 6.42841 34.5581 7.03351H32.5215C32.6225 5.32689 34.1519 3.87849 36.6995 3.87849C39.3712 3.87849 40.8797 5.38007 40.8797 7.74654V7.7473ZM38.8408 9.58343H36.395C34.8456 9.58343 34.1519 10.2965 34.1519 11.2145C34.1519 12.1326 34.7639 12.7485 35.9872 12.7485C37.8426 12.7485 38.8408 11.7233 38.8408 9.99429V9.5842V9.58343Z" fill="currentColor" />
+        <path d="M25.792 7.03309L32.1128 14.2712H29.4218L23.5488 7.54107V14.2712H21.409V0H23.5488V6.52511L29.0133 0H31.7043L25.792 7.03309Z" fill="currentColor" />
+        <path d="M1.7863 8.22249H0.00104389V6.06184H2.84234C3.92768 6.06184 4.52199 5.81286 5.2882 5.04511L10.331 0H11.0787L3.62088 7.45551C3.0258 8.05984 2.63113 8.22172 1.78707 8.22172L1.7863 8.22249ZM2.56407 10.4911L13.0497 0.000771587H12.302L4.23216 8.07064C3.4644 8.83839 2.87163 9.08737 1.7863 9.08737H0.00104389V11.248H0.730255C1.57355 11.248 1.96744 11.0861 2.56407 10.4918V10.4911ZM3.17534 11.0954C2.40913 11.8631 1.81482 12.1121 0.730255 12.1121H0.00104389V14.2728H14.273V0.000771587L3.17534 11.0954ZM4.6777 4.43076L9.10768 0H8.35997L6.34501 2.0219C5.57726 2.78811 4.98295 3.02553 3.89915 3.02553H0.000274658V5.19697H2.84157C3.6864 5.19697 4.0803 5.02353 4.67693 4.43076H4.6777ZM5.73374 1.406L7.13589 0.000771587H0.00104389V2.16219H3.89993C4.74399 2.16219 5.13789 2.00032 5.73374 1.406Z" fill="currentColor" />
+        <path d="M73.4121 14.2708H71.3932V4.0125H73.4121V8.19351H78.2043V4.0125H80.2231V14.2708H78.2043V10.0898H73.4121V14.2708ZM86.48 14.4743C85.528 14.4743 84.6647 14.2469 83.89 13.7913C83.1145 13.3357 82.5064 12.7037 82.0647 11.8951C81.623 11.0864 81.4018 10.1653 81.4018 9.13161C81.4018 8.1118 81.623 7.19759 82.0647 6.38898C82.5064 5.58038 83.1145 4.94752 83.89 4.49196C84.6647 4.03639 85.528 3.809 86.48 3.809C87.432 3.809 88.2915 4.03639 89.06 4.49196C89.8277 4.94752 90.4328 5.57961 90.8753 6.38898C91.317 7.19759 91.5382 8.11257 91.5382 9.13161C91.5382 10.1653 91.317 11.0864 90.8753 11.8951C90.4336 12.7037 89.8285 13.3365 89.06 13.7913C88.2915 14.2469 87.432 14.4743 86.48 14.4743ZM86.48 12.5981C87.0373 12.5981 87.5507 12.4555 88.0194 12.1695C88.4888 11.8843 88.8588 11.4765 89.1309 10.9462C89.403 10.4158 89.5387 9.81072 89.5387 9.13084C89.5387 8.45097 89.403 7.84972 89.1309 7.32632C88.8588 6.80292 88.4888 6.39823 88.0194 6.11302C87.5507 5.82704 87.0373 5.68444 86.48 5.68444C85.9227 5.68444 85.4093 5.82704 84.9406 6.11302C84.4712 6.39823 84.1012 6.80292 83.8291 7.32632C83.557 7.84972 83.4213 8.45174 83.4213 9.13084C83.4213 9.81072 83.557 10.4158 83.8291 10.9462C84.1012 11.4765 84.4712 11.8843 84.9406 12.1695C85.4101 12.4555 85.9227 12.5981 86.48 12.5981ZM94.7557 14.2708H92.7369V4.0125H96.0815L98.5898 11.66H98.9976L101.506 4.0125H104.871V14.2708H102.852V6.74511H102.444L99.9557 14.2708H97.6309L95.1635 6.74511H94.7557V14.2708ZM109.721 14.2708H106.743V4.0125H108.742V11.4565H109.149L112.657 4.0125H115.614V14.2708H113.615V6.82682H113.207L109.72 14.2708H109.721ZM119.506 14.2708H117.487V4.0125H119.506V8.70303L123.748 4.0125H126.174L121.585 9.02909L126.378 14.27H123.951L119.505 9.3752V14.27L119.506 14.2708ZM129.882 14.4743C129.161 14.4743 128.522 14.3347 127.965 14.0565C127.407 13.7782 126.979 13.3974 126.68 12.9149C126.381 12.4323 126.231 11.892 126.231 11.2938C126.231 10.2879 126.578 9.48543 127.271 8.88726C127.964 8.28909 128.998 7.99 130.371 7.99H132.982V7.72484C132.982 7.05884 132.788 6.52851 132.401 6.13384C132.013 5.73994 131.487 5.54261 130.82 5.54261C130.181 5.54261 129.664 5.68906 129.27 5.98121C128.875 6.27336 128.645 6.62408 128.577 7.03109H126.599C126.64 6.47377 126.83 5.94652 127.17 5.45087C127.51 4.95446 127.993 4.55671 128.618 4.25763C129.243 3.95854 129.977 3.809 130.82 3.809C132.098 3.809 133.114 4.16281 133.869 4.86967C134.623 5.57652 135 6.5285 135 7.72484V14.2715H133.247L133.042 13.15H132.941C132.709 13.4899 132.322 13.7959 131.778 14.068C131.235 14.3401 130.602 14.4758 129.882 14.4758V14.4743ZM130.085 12.7407C130.983 12.7407 131.689 12.4925 132.207 11.996C132.723 11.4996 132.982 10.8236 132.982 9.9672V9.60028H130.514C129.752 9.60028 129.185 9.74982 128.811 10.0489C128.437 10.348 128.251 10.7357 128.251 11.2113C128.251 11.6738 128.41 12.0438 128.73 12.3229C129.049 12.6019 129.502 12.7407 130.086 12.7407H130.085Z" fill="currentColor" />
+      </symbol>
+      <symbol id="i-chev" viewBox="0 0 16 16"><path d="M5.17157 7.33331L7.95286 10.1146C7.9789 10.1406 8.02111 10.1406 8.04714 10.1146L10.8284 7.33331" fill="none" stroke="currentColor" stroke-width="1.06667" /></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M9 5V7H15.585L4 18.585L5.415 20L17 8.415V15H19V5H9Z" fill="currentColor" /></symbol>
+    </svg>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
